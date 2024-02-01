@@ -31,10 +31,11 @@ const RetrieveImageScreen: React.FC = () => {
   
   const fetchImages = async () => {
 
- 
+  // const formData=new FormData();
+   //formData.append('category', selectedCategory);
    
       try {
-        const response = await axios.get(`http://192.168.1.3:8000/get_images/${category}`);
+        const response = await axios.get(`http://192.168.57.43:8000/get_images/${category}`);
         
         //console.log('Image retrieved', response);
         setImages(response.data.images);
@@ -76,12 +77,17 @@ return (
 <Text style={{ fontWeight: 'bold', fontSize: 24, color: 'black', textAlign: 'center', marginBottom: 20 }}>
         {category}
       </Text>
-        {images && images.length > 0 && ( // Ensure images array has data
-          <Image
-            source={{ uri: `data:image/jpg;base64,${images[0].data}` }} // Access the first image's data
-            style={{ width: 200, height: 200 }}
-          />
-        )}
+      {images && images.length > 0 && (
+  <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+    {images.map((image) => (
+      <Image
+        key={image.name} // Provide a unique key for each image
+        source={{ uri: `data:image/jpg;base64,${image.data}` }}
+        style={{ width: 200, height: 200 }} // Adjust styling as needed
+      />
+    ))}
+  </View>
+)}
       </View>
   
  </View> 
