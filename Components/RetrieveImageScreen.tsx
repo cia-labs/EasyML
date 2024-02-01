@@ -35,7 +35,11 @@ const RetrieveImageScreen: React.FC = () => {
    //formData.append('category', selectedCategory);
    
       try {
+<<<<<<< HEAD
+        const response = await axios.get(`http://192.168.1.3:8000/get_images/${category}`);
+=======
         const response = await axios.get(`http://192.168.57.43:8000/get_images/${category}`);
+>>>>>>> 182109af2a805e84ea32791a0120b708c21e13ef
         
         //console.log('Image retrieved', response);
         setImages(response.data.images);
