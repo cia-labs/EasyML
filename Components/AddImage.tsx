@@ -1,124 +1,133 @@
 
-
-
-import React, { useState, useCallback } from 'react';
-import { Button, View, Text, Image, Platform, Alert, Linking } from 'react-native';
-import ImagePicker, { ImageCropPicker, ImageOrVideo } from 'react-native-image-crop-picker';
-import axios, { AxiosResponse } from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Button, View, Text, Image, Platform, Alert, PermissionsAndroid, ScrollView } from 'react-native';
+import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
+import axios from 'axios';
 import ModalSelector from 'react-native-modal-selector';
-import * as RNFS from 'react-native-fs'; // Replace with React Native FS
+import * as RNFS from 'react-native-fs';
 
 const AddImage: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<ImageOrVideo | null>(null);
+  const [selectedImages, setSelectedImages] = useState<ImageOrVideo[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [base64images, setBase64Images] = useState<string[]>([]);
+
   const category: { key: string; label: string }[] = [
     { key: 'cat1', label: 'cat1' },
     { key: 'cat2', label: 'cat2' },
     { key: 'cat3', label: 'cat3' },
   ];
 
+  useEffect(() => {
+    // Request camera and storage permissions when the component mounts
+    requestPermissions();
+  }, []);
 
+  const requestPermissions = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const grantedCamera = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Camera Permission',
+            message: 'This app needs camera permission to take pictures.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
 
-  const selectImage = async () => {
+        if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Camera permissions granted');
+        } else {
+          console.log('Camera permissions denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
+
+  const selectImages = async () => {
     try {
-      const image = await ImagePicker.openPicker({
-        width: 200,
-        height: 200,
+      const images = await ImagePicker.openPicker({
+        multiple: true,
         cropping: true,
       });
-     setSelectedImage(image);
-    
+      setSelectedImages(images);
+
+      const base64ImagesArray = await Promise.all(
+        images.map(async (image) => {
+          const filePath = Platform.OS === 'android' ? image.path.replace('file://', '') : image.path;
+          return await RNFS.readFile(filePath, 'base64');
+        })
+      );
+      setBase64Images(base64ImagesArray);
     } catch (error) {
       console.log('Image selection cancelled or failed.', error);
     }
   };
-  
-  const selectCategory = async () => {(option: { key: string; label: string }) => { 
-    setSelectedCategory(option.key)}};
-  
-  const extractFileName = (uri: string) => {
-    const pathArray = uri.split('/');
-    const fileName = pathArray[pathArray.length - 1];
-    return fileName;
-  };
-  
-  
-  
 
-  const uploadImage = async () => {
-    if (!selectedImage) {
-      Alert.alert('Error', 'Please select an image first.');
+  const selectCategory = (option: { key: string; label: string }) => {
+    setSelectedCategory(option.key);
+  };
+
+  const uploadImages = async () => {
+    if (!selectedImages.length || !selectedCategory) {
+      Alert.alert('Error', 'Please select at least one image and a category.');
       return;
     }
 
-    // Get base64-encoded image data using RNFS
-    const filePath = Platform.OS === 'android' ? selectedImage.path.replace('file://', '') : selectedImage.path;
     try {
-      const base64Data = await RNFS.readFile(filePath, 'base64');
-
       const formData = new FormData();
-      formData.append('image', base64Data);
       formData.append('category', selectedCategory);
-      formData.append('filename', selectedImage.path.split('/').pop());
+      
+      // Append each base64 image to FormData
+      base64images.forEach((base64Image, index) => {
+        formData.append('image', base64Image);
+      });
 
-       console.log(formData)
+      // Send POST request with FormData
+      const response = await axios.post('http://192.168.1.3:8000/uploadfiles/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-      try {
-        const response = await axios.post('http://192.168.1.3:8000/uploadfiles/', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            
-          },
-        });
-
-        console.log('Image uploaded', response);
-        Alert.alert('Success', 'Image uploaded successfully!');
-      } catch (error) {
-        console.error('Error uploading image:', error);
-        Alert.alert('Error', 'Failed to upload image. Please try again.');
-      }
-    } catch (readFileError) {
-      console.error('Error reading image file:', readFileError);
-      Alert.alert('Error', 'Failed to read selected image.');
+      console.log('Images uploaded', response);
+      Alert.alert('Success', 'Images uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      Alert.alert('Error', 'Failed to upload images. Please try again.');
     }
   };
 
+  return (
+      <ScrollView> 
+        <View>
+          <Text style={{ fontWeight: 'bold', fontSize: 32, color: 'black', textAlign: 'center', marginBottom: 50 }}>
+            Add Images
+          </Text>
+          <Button onPress={selectImages} title="Select Images" color="black" />
+  
+          {selectedImages.map((image, index) => (
+            <Image key={index} source={{ uri: image.path }} style={{ width: 200, height: 200, marginVertical: 10 }} />
+          ))}
+  
+          <ModalSelector
+            data={category}
+            initValueTextStyle={{ fontWeight: 'bold', color: 'black' }}
+            initValue="Select Category"
+            accessible={true}
+            onChange={selectCategory}
+            selectStyle={{ borderWidth: 10 }}
+            cancelStyle={{ borderWidth: 10 }}
+          />
+  
+          <Button onPress={uploadImages} title="Upload Images" color="blue" />
+        </View>
+      </ScrollView>
+    );
+  };
 
-return (
-  <View>
-    <Text style={{ fontWeight: 'bold', fontSize: 32, color: 'black', textAlign: 'center', marginBottom: 50 }}>Add Image</Text>
-    <Button
-    onPress={selectImage}
-    title="Select Image"
-    color="black"
-    />
-
-    {selectedImage && (
-      <Image source={{ uri: selectedImage.path }} style={{ width: 200, height: 200 }} />
-    )}
-
-    <ModalSelector
-      data={category}
-      initValueTextStyle={ { fontWeight: 'bold', color: 'black'}}
-      initValue="Select Category"
-      accessible={true}
-      onChange={(option: { key: string; label: string }) => { setSelectedCategory(option.key)}}
-      selectStyle={{ borderWidth: 10 }}
-      cancelStyle={{ borderWidth: 10 }}
-    />
-
-
-  <Button
-      onPress={uploadImage} // Use uploadImage directly without hardcoded values
-      title="Upload Image"
-      color="blue"
-      
-    />
-  </View>
-);
-    };
 export default AddImage;
-
-
-
 
