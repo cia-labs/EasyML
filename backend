@@ -1,6 +1,5 @@
-# for reference
-
-
+from typing import List, Optional
+from ciaos import get, save
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,64 +18,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-async def validate_image(image: str = Form(...), category: str = Form(...)):
-    #allowed_image_formats = ["jpeg", "jpg", "png", "gif","b64"]
-    #max_image_size = 100 * 1024 * 1024  # 2 MB
 
-    # Decode base64 image data
-    try:
-        image_bytes = base64.b64decode(image)
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid base64-encoded image data")
-
-    # Validate image format
-   # if not any(category.lower().endswith(fmt) for fmt in allowed_image_formats):
-       # raise HTTPException(status_code=400, detail="Invalid image format. Supported formats: jpeg, jpg, png, gif")
-
-    # Validate image size
-    #if len(image_bytes) > max_image_size:
-        #raise HTTPException(status_code=400, detail=f"Image size exceeds the maximum allowed size of {max_image_size} bytes")
-
-    return image_bytes, category
-
-async def save_locally(image_bytes: bytes, category: str, filename: str):
-    save_path = f"C:/uploads/{category}/"
-    os.makedirs(save_path, exist_ok=True)
-
-    file_path = os.path.join(save_path, filename)
-    with open(file_path, 'wb') as file:
-        file.write(image_bytes)
-
-    return file_path
-
-def get_images_by_category(category: str):
-    image_directory = f"C:/uploads/{category}"
-
-    images = []
-
-    for file_name in os.listdir(image_directory):
-        file_path = os.path.join(image_directory, file_name)
-        with open(file_path, "rb") as file:
-            image_data = base64.b64encode(file.read()).decode("utf-8")
-            images.append({"name": file_name, "data": image_data})
-
-    return images
 
 @app.post("/uploadfiles/")
-async def upload_image(image: str = Form(...), category: str = Form(...), filename: str = Form(...)):
+async def update_file(category: Optional[str] = Form(None), image: List[str] = Form(...)):
     try:
-        validated_data = await validate_image(image, category)
-        saved_path = await save_locally(*validated_data, filename)
-        return JSONResponse(content={"message": f"Image saved locally at: {saved_path}"}, status_code=200)
+        save("https://storage.cialabs.tech",category,image)
+        return JSONResponse(content={"message": f"Image saved locally at: {category}"}, status_code=200)
     except HTTPException as e:
         return JSONResponse(content={"error": str(e.detail)}, status_code=e.status_code)
+
+
     
 @app.get("/get_images/{category}")
 async def get_images(category: str):
-    try:
-        images = get_images_by_category(category)
-        return {"category": category, "images": images}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
+  try:
+      images=get("https://storage.cialabs.tech",category)
+      return images
+  except Exception as e:
+      raise HTTPException(status_code=500, detail=str(e))
