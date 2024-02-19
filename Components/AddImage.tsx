@@ -87,7 +87,7 @@ const AddImage: React.FC = () => {
       });
 
       // Send POST request with FormData
-      const response = await axios.post('http://192.168.1.3:8000/uploadfiles/', formData, {
+      const response = await axios.post('https://which-api.cialabs.tech/uploadfiles/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
