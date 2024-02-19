@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Menu from './Components/Menu';
 import AddImage from './Components/AddImage';
 import RetrieveImageScreen from './Components/RetrieveImageScreen';
+import StartTesting from './Components/StartTesting';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="Menu" component={Menu} />
         <Stack.Screen name="AddImage" component={AddImage} />
         <Stack.Screen name="RetrieveImageScreen" component={RetrieveImageScreen} />
+        <Stack.Screen name="StartTesting" component={StartTesting} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
