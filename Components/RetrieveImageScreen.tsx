@@ -25,7 +25,7 @@ const RetrieveImageScreen: React.FC = () => {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.3:8000/get_images/${category}`);
+      const response = await axios.get(`https://which-api.cialabs.tech/get_images/${category}`);
 
       if (!Array.isArray(response.data)) {
         Alert.alert('Error', 'Invalid image data received from the server.');
