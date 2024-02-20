@@ -80,10 +80,10 @@ android {
         applicationId "com.imageproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0"
     }
-     signingConfigs {
+    signingConfigs {
         release {
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
@@ -95,6 +95,7 @@ android {
     }
     buildTypes {
         debug {
+            
             signingConfig signingConfigs.debug
         }
         release {
