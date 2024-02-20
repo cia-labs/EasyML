@@ -1,7 +1,8 @@
 
-import React, { useState } from 'react';
-import { Button, View, Text, Image, Alert } from 'react-native';
-import axios from 'axios';
+import React, { useState, useCallback } from 'react';
+import { Button, View, Text, Image, Platform, Alert, Linking } from 'react-native';
+import ImagePicker, { ImageCropPicker, ImageOrVideo } from 'react-native-image-crop-picker';
+import axios, { AxiosResponse } from 'axios';
 import ModalSelector from 'react-native-modal-selector';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -24,27 +25,27 @@ const RetrieveImageScreen: React.FC = () => {
   };
 
   const fetchImages = async () => {
-    try {
-      const response = await axios.get(`https://which-api.cialabs.tech/get_images/${category}`);
 
-      if (!Array.isArray(response.data)) {
-        Alert.alert('Error', 'Invalid image data received from the server.');
-        return;
+  // const formData=new FormData();
+   //formData.append('category', selectedCategory);
+   
+      try {
+<<<<<<< HEAD
+        const response = await axios.get(`http://192.168.1.3:8000/get_images/${category}`);
+=======
+        const response = await axios.get(`http://192.168.57.43:8000/get_images/${category}`);
+>>>>>>> 182109af2a805e84ea32791a0120b708c21e13ef
+        
+        //console.log('Image retrieved', response);
+        setImages(response.data.images);
+        console.log(images)
+      } catch (error) {
+        console.error('Error retrieving image:', error);
+        Alert.alert('Error', 'Failed to retrieve image. Please try again.');
       }
+    };
+  
 
-      const base64Images: string[] = response.data;
-
-      const imageDataList: ImageData[] = base64Images.map((imageString: string, index: number) => ({
-        name: `Image ${index + 1}`,
-        data: imageString,
-      }));
-
-      setImages(imageDataList);
-    } catch (error) {
-      console.error('Error retrieving images:', error);
-      Alert.alert('Error', 'Failed to retrieve images. Please try again.');
-    }
-  };
 
   return (
 
@@ -84,7 +85,4 @@ const RetrieveImageScreen: React.FC = () => {
 };
 
 export default RetrieveImageScreen;
-
-
-
 
