@@ -7,4 +7,4 @@ class AppConfig:
     #URL of the Model As Service to fetch the result for the Test Model👇
     
     MAS_SERVICE_URL = "https://cia-mas.cialabs.tech/"
-    MAS_SERVICE_ENDPOINT = "/upload/"
+    MAS_SERVICE_ENDPOINT = "upload/"

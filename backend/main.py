@@ -1,12 +1,10 @@
-from pstats import Stats
-import statistics
-import requests
-from config import AppConfig  
-from typing import List, Optional
-from fastapi import FastAPI, Query, HTTPException, Form
-from fastapi.responses import JSONResponse
-from ciaos import save,get
+from fastapi import FastAPI, Query, HTTPException, Form, UploadFile, File
+from service.service import test_model_v1, test_model_v2
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from typing import List, Optional
+from config import AppConfig  
+from ciaos import save,get
 
 app = FastAPI()
 
@@ -37,18 +35,9 @@ async def get_images(category: str):
 
 @app.get("/test_model")
 async def test_model(base64: str = Query(..., description="Base64-encoded image data"), model_name: str = Query(..., description="Name of the model to use")):
-   
-    if not all([base64, model_name]):
-        raise HTTPException(status_code=statistics.HTTP_400_BAD_REQUEST, detail="Missing required parameters: base64 and model_name")
+   return test_model_v1(base64, model_name)
 
-    try:
-        image_data = base64.b64decode(base64)
-        data = {"image": ("image", image_data), "model_name": model_name}
-        response = requests.post(f"{AppConfig.MAS_SERVICE_URL}{AppConfig.MAS_SERVICE_ENDPOINT}", data=data)  # Using AppConfig to access attributes
-        if response.status_code == 200:
-            return response.json()
-        else:
-            raise HTTPException(status_code=response.status_code, detail=response.text)
+@app.post("/test_model_v2")
+async def upload_file(file: UploadFile = File(...)):
+    return test_model_v2(file)
 
-    except (ValueError, requests.exceptions.RequestException) as e:
-        raise HTTPException(status_code=Stats.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error sending request to MAS service: {str(e)}")
