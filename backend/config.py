@@ -1,9 +1,10 @@
-# config.py
-
 from typing import List
 
 class AppConfig:
-    ORIGINS = ["*"]  # Change this to the appropriate origin(s) of your React Native app
+    ORIGINS = ["*"] 
     STORAGE_BASE_URL = "https://storage.cialabs.tech"
 
-# Add more configuration settings as needed
+    #URL of the Model As Service to fetch the result for the Test Model👇
+    
+    MAS_SERVICE_URL = "https://cia-mas.cialabs.tech/"
+    MAS_SERVICE_ENDPOINT = "upload/"

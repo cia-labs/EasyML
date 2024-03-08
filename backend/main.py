@@ -1,17 +1,13 @@
-
-from typing import List, Optional
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form
-from fastapi.responses import JSONResponse
-from ciaos import save,get
+from fastapi import FastAPI, Query, HTTPException, Form, UploadFile, File
+from service.service import test_model_v1, test_model_v2
 from fastapi.middleware.cors import CORSMiddleware
-import os
-import base64
-
-from config import AppConfig  # Import the AppConfig class from your configuration file
+from fastapi.responses import JSONResponse
+from typing import List, Optional
+from config import AppConfig  
+from ciaos import save,get
 
 app = FastAPI()
 
-# Configure CORS (Cross-Origin Resource Sharing)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=AppConfig.ORIGINS,
@@ -35,3 +31,13 @@ async def get_images(category: str):
         return images
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/test_model")
+async def test_model(base64: str = Query(..., description="Base64-encoded image data"), model_name: str = Query(..., description="Name of the model to use")):
+   return test_model_v1(base64, model_name)
+
+@app.post("/test_model_v2")
+async def upload_file(file: UploadFile = File(...)):
+    return test_model_v2(file)
+
