@@ -13,7 +13,9 @@ class Metadata(BaseModel):
 class Feedback(BaseModel):
     modelName : str
     imageKey : str
+    apiResponse : str
     qa : List[QuestionAnswer]
 
 class Query(BaseModel):
     query : str
+

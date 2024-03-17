@@ -68,7 +68,7 @@ def fetch_metadata(query):
 
 def fetch_imageKey(image):
     try:
-        binary_data = image.file.read()
+        binary_data =image.file.read()
         encoded = binascii.b2a_base64(binary_data, newline=False)
         base64_string=encoded.decode('utf-8')
        
