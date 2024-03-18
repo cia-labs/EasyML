@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Query, HTTPException, Form, UploadFile, File
-from service.service import test_model_v1, test_model_v2,createFeedback,Metadata,Feedback, fetch_metadata,fetch_imageKey
+from service.service import test_model_v1, test_model_v2,createFeedback,Metadata,Feedback, fetch_metadata
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import List, Optional
@@ -51,7 +51,3 @@ async def create_feedback(feedback:Feedback):
 @app.get("/metadata")
 async def get_metadata(query:str):
    return fetch_metadata(query)
-
-@app.post("/key")
-async def fetch_key(image:UploadFile = File(...)):
-    return fetch_imageKey(image)
