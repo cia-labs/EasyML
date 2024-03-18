@@ -33,7 +33,7 @@ def test_model_v1(base64_str: str, model_name: str):
 def test_model_v2(file: UploadFile):
     try:
         files = {'file': (file.filename, file.file.read(), file.content_type)}
-        response = requests.post(f"{AppConfig.MAS_SERVICE_URL}{AppConfig.MAS_SERVICE_ENDPOINT}", files=files)
+        masResponse = requests.post(f"{AppConfig.MAS_SERVICE_URL}{AppConfig.MAS_SERVICE_ENDPOINT}", files=files)
         
         binary_data =file.file.read()
         encoded = binascii.b2a_base64(binary_data, newline=False)
@@ -44,10 +44,10 @@ def test_model_v2(file: UploadFile):
         key = json_response.get('key') 
         print(key)
 
-        if response.status_code == 200:
+        if masResponse.status_code == 200:
             try:
-                result = response.json()
-                return ["No" if result == 0 else "Yes",key]
+                result = masResponse.json()
+                return {"apiResult": "No" if result == 0 else "Yes", "imageKey": key}
             except ValueError:
                 return {"error": "Failed to parse JSON response"}
         else:
