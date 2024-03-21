@@ -33,7 +33,7 @@ cd frontend
 ```
 
 ```bash
-# Install dependencies
+# Install the dependencies
 npm install
 
 # or
@@ -81,13 +81,19 @@ yarn ios
 
 ## Usage
 
-- Move the backend directory. i.e "cd backend".
-- Then run the following commands to get started!
+- Run the following commands to get started!
 - Don't forget to check out config.py.
 
 ### Step 1: Install the requirements.txt
 
+First, Navigate to Backend.
+
 ```bash
+cd backend
+```
+
+```bash
+#install the requirements
 pip install -r requirements.txt
 ```
 
