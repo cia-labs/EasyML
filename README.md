@@ -14,8 +14,6 @@ Before you begin, make sure you have the following installed on your development
 - npm or Yarn: npm comes with Node.js installation, but you can also use Yarn as an alternative package manager.
 - React Native CLI: Install React Native CLI globally by running `npm install -g react-native-cli`.
 
-### Installing
-
 ### Step 1: Clone the repository
 
 Clone the repository to your local machine:
