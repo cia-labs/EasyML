@@ -30,9 +30,12 @@ First, Navigate to frontend.
 
 ```bash
 cd frontend
+```
 
+```bash
 # Install dependencies
 npm install
+
 # or
 yarn
 ```
