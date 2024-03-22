@@ -1,10 +1,13 @@
 from fastapi import FastAPI, Query, HTTPException, Form, UploadFile, File
-from service.service import test_model_v1, test_model_v2
+from service.service import test_model_v1, test_model_v2,createFeedback,Metadata,Feedback, fetch_metadata
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import List, Optional
-from config import AppConfig  
+from config import AppConfig 
 from ciaos import save,get
+import json
+from models.model import Feedback,Metadata
+
 
 app = FastAPI()
 
@@ -41,3 +44,10 @@ async def test_model(base64: str = Query(..., description="Base64-encoded image 
 async def upload_file(file: UploadFile = File(...)):
     return test_model_v2(file)
 
+@app.post("/feedback")
+async def create_feedback(feedback:Feedback):
+    return createFeedback(feedback)
+
+@app.get("/metadata")
+async def get_metadata(query:str):
+   return fetch_metadata(query)
