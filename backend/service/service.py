@@ -12,9 +12,6 @@ from typing import List
 from models.model import Feedback,Metadata
 import pybase64
 
-
-
-
 def test_model_v1(base64_str: str, model_name: str):
     if not all([base64_str, model_name]):
         raise HTTPException(status_code=400, detail="Missing required parameters: base64 and model_name")
@@ -30,7 +27,6 @@ def test_model_v1(base64_str: str, model_name: str):
 
     except (ValueError, requests.exceptions.RequestException) as e:
         raise HTTPException(status_code=500, detail=f"Error sending request to MAS service: {str(e)}")
-
 
 def test_model_v2(file: UploadFile):
     try:
