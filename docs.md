@@ -7,6 +7,7 @@
 Before you begin, make sure you have the following installed on your development machine:
 
 - Node.js: [Download & Install Node.js](https://nodejs.org/)
+  Make sure You have Node version > v21.6.1
 - npm or Yarn: npm comes with Node.js installation, but you can also use Yarn as an alternative package manager.
 - React Native CLI: Install React Native CLI globally by running `npm install -g react-native-cli`.
 
