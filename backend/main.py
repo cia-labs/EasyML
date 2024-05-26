@@ -8,7 +8,6 @@ from ciaos import save,get
 import json
 from models.model import Feedback,Metadata
 
-
 app = FastAPI()
 
 app.add_middleware(
@@ -34,7 +33,6 @@ async def get_images(category: str):
         return images
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 @app.get("/test_model")
 async def test_model(base64: str = Query(..., description="Base64-encoded image data"), model_name: str = Query(..., description="Name of the model to use")):
