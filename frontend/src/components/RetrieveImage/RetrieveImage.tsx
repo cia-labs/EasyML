@@ -26,10 +26,16 @@ const RetrieveImage: React.FC = () => {
   const windowWidth = Dimensions.get('window').width;
   const navigation = useNavigation();
 
+  /**
+      Sets Category
+  **/
   const selectCategory = (category: string) => {
     setSelectedCategory(category);
   };
 
+  /**
+      Open Tab
+  **/
   const openTab = (photo: string) => {
     try {
       navigation.navigate('OpenImage', {
@@ -40,6 +46,9 @@ const RetrieveImage: React.FC = () => {
     }
   };
 
+  /**
+      Fetches the images on retrieve
+  **/
   const fetchImages = async () => {
     if (!category) {
       Alert.alert('Error', 'Please select a category first.');
@@ -82,15 +91,18 @@ const RetrieveImage: React.FC = () => {
     <ScrollView style={styles.container}>
       <View style={{flex: 1}}>
         <Text style={styles.heading}>Retrieve Images</Text>
+        
         <DropDown
           onSelect={selectCategory}
           fetchType="category"
           selectedModel={''}
         />
+
         <TouchableOpacity onPress={fetchImages}>
           <Text style={styles.retrieveBtn}>Retrieve Image</Text>
           {isLoading && <ActivityIndicator size="large" color="black" />}
         </TouchableOpacity>
+
         <View style={styles.parent}>
           {images.map((itemm, index) => (
             <TouchableOpacity
@@ -106,6 +118,7 @@ const RetrieveImage: React.FC = () => {
             </TouchableOpacity>
           ))}
         </View>
+        
       </View>
     </ScrollView>
   );
