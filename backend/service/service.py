@@ -1,16 +1,12 @@
 from fastapi import HTTPException, UploadFile,Form
+import pybase64
 from config import AppConfig
 import base64
-import json
 import binascii
 import requests
-from pydantic import BaseModel
-from typing import List 
 from database.database import collectionMeta,collectionResult
 from ciaos import save
-from typing import List 
 from models.model import Feedback,Metadata
-import pybase64
 
 def test_model_v1(base64_str: str, model_name: str):
     if not all([base64_str, model_name]):
@@ -26,11 +22,12 @@ def test_model_v1(base64_str: str, model_name: str):
             raise HTTPException(status_code=response.status_code, detail=response.text)
 
     except (ValueError, requests.exceptions.RequestException) as e:
-        raise HTTPException(status_code=500, detail=f"Error sending request to MAS service: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error sending request to MAS servic   e: {str(e)}")
 
 def test_model_v2(file: UploadFile):
     try:
-        files = {'file': (file.filename, file.file.read(), file.content_type)}
+        content = file.read()
+        files = {'file': content}
         masResponse = requests.post(f"{AppConfig.MAS_SERVICE_URL}{AppConfig.MAS_SERVICE_ENDPOINT}", files=files)
         
         file.file.seek(0)
@@ -53,6 +50,7 @@ def test_model_v2(file: UploadFile):
     except Exception as e:
         return {"error": f"Failed to complete the request: {str(e)}"}
 
+
 def createFeedback(feedback: Feedback):
     try:
         feedback_id = collectionResult.insert_one(feedback.dict()).inserted_id
@@ -69,5 +67,3 @@ def fetch_metadata(query):
         return data
     except Exception as e:
          return {"error": f"Failed to fetch metadata: {str(e)}"}
-
-

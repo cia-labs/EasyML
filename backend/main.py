@@ -1,12 +1,11 @@
 from fastapi import FastAPI, Query, HTTPException, Form, UploadFile, File
-from service.service import test_model_v1, test_model_v2,createFeedback,Metadata,Feedback, fetch_metadata
+from service.service import test_model_v1, test_model_v2,createFeedback,Feedback, fetch_metadata
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import List, Optional
 from config import AppConfig 
-from ciaos import save,get
-import json
-from models.model import Feedback,Metadata
+from ciaos import get,update
+from models.model import Feedback
 
 app = FastAPI()
 
@@ -21,12 +20,14 @@ app.add_middleware(
 @app.post("/uploadfiles/")
 async def update_file(category: Optional[str] = Form(None), image: List[str] = Form(...)):
     try:
-        save(AppConfig.STORAGE_BASE_URL, category, image)
+        if category is None:
+            raise HTTPException(status_code=400, detail="Category is required")   
+        update(AppConfig.STORAGE_BASE_URL, category, image)
         return JSONResponse(content={"message": f"Image saved locally at: {category}"}, status_code=200)
     except HTTPException as e:
         return JSONResponse(content={"error": str(e.detail)}, status_code=e.status_code)
 
-@app.get("/get_images/{category}")
+@app.get("/get_images/{category}")  
 async def get_images(category: str):
     try:
         images = get(AppConfig.STORAGE_BASE_URL, category)
