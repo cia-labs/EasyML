@@ -8,6 +8,7 @@ from database.database import collectionMeta,collectionResult
 from ciaos import save
 from models.model import Feedback,Metadata
 
+### Old Function of Test Model ###
 def test_model_v1(base64_str: str, model_name: str):
     if not all([base64_str, model_name]):
         raise HTTPException(status_code=400, detail="Missing required parameters: base64 and model_name")
@@ -24,6 +25,7 @@ def test_model_v1(base64_str: str, model_name: str):
     except (ValueError, requests.exceptions.RequestException) as e:
         raise HTTPException(status_code=500, detail=f"Error sending request to MAS servic   e: {str(e)}")
 
+### New Function of Test Model ###
 def test_model_v2(file: UploadFile):
     try:
         content = file.read()
@@ -50,7 +52,7 @@ def test_model_v2(file: UploadFile):
     except Exception as e:
         return {"error": f"Failed to complete the request: {str(e)}"}
 
-
+### Feedback submission ###
 def createFeedback(feedback: Feedback):
     try:
         feedback_id = collectionResult.insert_one(feedback.dict()).inserted_id
@@ -59,6 +61,7 @@ def createFeedback(feedback: Feedback):
     except Exception as e:
         return {"error": f"Failed to send feedback the request: {str(e)}"}
 
+### Fetch Metadata ###
 def fetch_metadata(query):
     try:
         data = []
