@@ -34,6 +34,9 @@ const StartTesting: React.FC = () => {
     fetchQuestions();
   }, []);
 
+  /**
+      Camera Permission
+  **/
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -59,6 +62,9 @@ const StartTesting: React.FC = () => {
     }
   };
 
+  /**
+      Capturing Image
+  **/
   const captureImage = async () => {
     try {
       const image = await ImagePicker.openCamera({
@@ -71,6 +77,9 @@ const StartTesting: React.FC = () => {
     }
   };
 
+  /**
+      Select Image from Add Icon
+  **/
   const selectImages = async () => {
     try {
       const images = await ImagePicker.openPicker({
@@ -89,6 +98,9 @@ const StartTesting: React.FC = () => {
     }
   };
 
+  /**
+      Submission for testing
+  **/
   const handleSubmit = async () => {
     try {
       if (selectedModel === 'Choose Model') {
@@ -139,6 +151,9 @@ const StartTesting: React.FC = () => {
     }
   };
 
+  /**
+      Fetches the feedback question
+  **/
   const fetchQuestions = async () => {
     try {
       const response = await fetch(`${api}/metadata?query=question`);
@@ -157,6 +172,9 @@ const StartTesting: React.FC = () => {
     }
   };
 
+  /**
+      Handles feedback submission
+  **/
   const handleFeedbackSubmit = () => {
     setSelectedImages([]);
     setApiResults({});
@@ -172,6 +190,9 @@ const StartTesting: React.FC = () => {
   const apiResultsString = JSON.stringify(apiResults);
   const formattedApiResults = apiResultsString.replace(/"/g, '');
 
+  /**
+      Sets selectModel
+  **/
   const handleModelSelect = (model: string) => {
     setSelectedModel(model);
   };
@@ -180,12 +201,14 @@ const StartTesting: React.FC = () => {
     <ScrollView style={styles.wrapper}>
       <View>
         <Text style={styles.heading}>Test the Model</Text>
+
         <DropDown
           key={selectedModel}
           onSelect={handleModelSelect}
           fetchType="model"
           selectedModel={selectedModel}
         />
+
         <View style={styles.photo}>
           {selectedImages.map((image, index) => (
             <View key={index}>
@@ -196,6 +219,7 @@ const StartTesting: React.FC = () => {
             </View>
           ))}
         </View>
+        
         <View style={styles.imageSelectionContainer}>
           <View style={styles.CaptureButtonWrapper}>
             <TouchableOpacity
