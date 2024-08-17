@@ -17,6 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+### Upload the Files ###
 @app.post("/uploadfiles/")
 async def update_file(category: Optional[str] = Form(None), image: List[str] = Form(...)):
     try:
@@ -27,6 +28,7 @@ async def update_file(category: Optional[str] = Form(None), image: List[str] = F
     except HTTPException as e:
         return JSONResponse(content={"error": str(e.detail)}, status_code=e.status_code)
 
+### Get the Files ###
 @app.get("/get_images/{category}")  
 async def get_images(category: str):
     try:
@@ -35,18 +37,22 @@ async def get_images(category: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+### Old Endpoint to test model ###
 @app.get("/test_model")
 async def test_model(base64: str = Query(..., description="Base64-encoded image data"), model_name: str = Query(..., description="Name of the model to use")):
    return test_model_v1(base64, model_name)
 
+### New Endpoint to test model ###
 @app.post("/test_model_v2")
 async def upload_file(file: UploadFile = File(...)):
     return test_model_v2(file)
 
+### Fetch Feedback ###
 @app.post("/feedback")
 async def create_feedback(feedback:Feedback):
     return createFeedback(feedback)
 
+### Get Metadata ###
 @app.get("/metadata")
 async def get_metadata(query:str):
    return fetch_metadata(query)
