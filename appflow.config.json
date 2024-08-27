@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "appId": "", //use the app_id of the app created at appflow
+            "root": "./frontend" //says package.json is at frontend
+            
+        }
+    ]
+}
