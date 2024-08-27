@@ -129,7 +129,7 @@ const AddImage: React.FC = () => {
           formData.append('image', image.data);
 
           const response = await axios.post(
-            'https://which-api.cialabs.tech/uploadfiles/',
+            'https://which-api.cialabs.org/uploadfiles/',
             formData,
             {
               headers: {
