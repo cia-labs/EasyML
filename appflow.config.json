@@ -1,6 +1,3 @@
-/*  
-    appFlow.json checks for package.json in the root(i.e, frontend) and then build on top it
-*/
 {
     "apps": [
         {
