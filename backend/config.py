@@ -10,5 +10,5 @@ class AppConfig:
     MAS_SERVICE_URL = "https://cia-mas.cialabs.org/"
     MAS_SERVICE_ENDPOINT = "upload/"
 
-    # url for connect mongoDB 👇
+    ### url for connect mongoDB 👇 ###
     mongo_url= 'mongodb+srv://which-img:cialabsintern@atlascluster.mytwvuv.mongodb.net/'

@@ -1,5 +1,8 @@
 export const api = 'https://which-api.cialabs.org';
 
+/**
+      Fetches Category
+**/
 export const fetchCategory = async (): Promise<any[]> => {
   try {
     const response = await fetch(`${api}/metadata?query=category`);
@@ -18,6 +21,9 @@ export const fetchCategory = async (): Promise<any[]> => {
   }
 };
 
+/**
+      Fetches Model
+**/
 export const fetchModels = async (): Promise<any[]> => {
   try {
     const response = await fetch(`${api}/metadata?query=model`);

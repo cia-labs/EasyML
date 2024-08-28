@@ -33,6 +33,9 @@ const AddImage: React.FC = () => {
     requestCameraPermission();
   }, []);
 
+  /**
+        Camera Permission
+  **/
   const requestCameraPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -55,6 +58,9 @@ const AddImage: React.FC = () => {
     }
   };
 
+  /**
+      Select Image from Add Icon
+  **/
   const selectImages = async () => {
     try {
       const images = await ImagePicker.openPicker({
@@ -85,6 +91,9 @@ const AddImage: React.FC = () => {
     }
   };
 
+  /**
+      Select Image from Camera Icon
+  **/
   const captureImage = async () => {
     try {
       const image = await ImagePicker.openCamera({
@@ -109,10 +118,29 @@ const AddImage: React.FC = () => {
     }
   };
 
+  /**
+      Sets Select Category
+  **/
   const selectCategory = (category: string) => {
     setSelectedCategory(category);
   };
 
+  /**
+      Gets the Source of Image
+  **/
+  const getImageSource = (
+    image: ImageOrVideo | {name: string; data: string},
+  ): string => {
+    if ('path' in image) {
+      return image.path || '';
+    } else {
+      return 'data:image/jpeg;base64,' + image.data;
+    }
+  };
+
+  /**
+      Upload Images
+  **/
   const uploadImages = async () => {
     await setIsLoading(true);
 
@@ -149,21 +177,15 @@ const AddImage: React.FC = () => {
     setIsLoading(false);
   };
 
-  const getImageSource = (
-    image: ImageOrVideo | {name: string; data: string},
-  ): string => {
-    if ('path' in image) {
-      return image.path || '';
-    } else {
-      return 'data:image/jpeg;base64,' + image.data;
-    }
-  };
-
   return (
     <ScrollView style={styles.container}>
       <View>
         <Text style={styles.heading}>Add Images</Text>
-        <DropDown onSelect={selectCategory} fetchType="category" />
+        <DropDown
+          onSelect={selectCategory}
+          fetchType="category"
+          selectedModel={''}
+        />
         <View style={styles.parent}>
           {selectedImages.map((image, index) => (
             <View key={index}>
