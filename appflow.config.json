@@ -1,8 +1,11 @@
+/*  
+    appFlow.json checks for package.json in the root(i.e, frontend) and then build on top it
+*/
 {
     "apps": [
         {
-            "appId": "", //use the app_id of the app created at appflow
-            "root": "./frontend" //says package.json is at frontend
+            "appId": "9fc518cc", 
+            "root": "./frontend"
             
         }
     ]
