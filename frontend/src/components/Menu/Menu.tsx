@@ -15,12 +15,16 @@ const Menu: React.FC<MenuProps> = ({navigation}) => {
           justifyContent: 'space-around',
           padding: 50,
         }}>
+
+        {/* Add Button  */}
         <TouchableOpacity onPress={() => navigation.navigate('AddImage')}>
           <View style={styles.iconContainer}>
             <Icon style={styles.icon} name="camera" size={50} color="white" />
             <Text style={styles.iconTitle}>Add Images</Text>
           </View>
         </TouchableOpacity>
+
+        {/* Retrieve Button  */}
         <TouchableOpacity
           onPress={() => navigation.navigate('RetrieveImageScreen')}>
           <View style={styles.iconContainer}>
@@ -33,12 +37,15 @@ const Menu: React.FC<MenuProps> = ({navigation}) => {
             <Text style={styles.iconTitle}>Retrieve Images</Text>
           </View>
         </TouchableOpacity>
+
+        {/* Start Testing Button  */}
         <TouchableOpacity onPress={() => navigation.navigate('StartTesting')}>
           <View style={styles.iconContainer}>
             <Icon style={styles.icon} name="search" size={50} color="white" />
             <Text style={styles.iconTitleStartTesting}>Start Testing</Text>
           </View>
         </TouchableOpacity>
+        
       </View>
     </View>
   );

@@ -16,7 +16,7 @@ Before you begin, make sure you have the following installed on your development
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/Ashish9738/Which-Images.git
+git clone https://github.com/cia-labs/Which-Images.git
 ```
 
 ### Step 2: Install Dependencies
