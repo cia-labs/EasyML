@@ -7,4 +7,4 @@ HLD - High Level Design
 
 # Local Setup Guide
 
-https://github.com/Ashish9738/Which-Images/blob/main/docs.md
+https://github.com/cia-labs/Which-Images/blob/main/docs.md
