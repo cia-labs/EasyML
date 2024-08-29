@@ -48,7 +48,7 @@ const DropDown: React.FC<Props> = ({onSelect, fetchType, selectedModel}) => {
 
   const handleError = (error: any) => {
     if (error instanceof Error) {
-      setError(`Error fetching data: ${error.message}`);
+      setError(`Network Issue, Please try again later`);
     } else {
       setError('Unknown error fetching data. Please try again.');
     }
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginTop: 10,
     textAlign: 'center',
+    paddingBottom: 20,
   },
 });
 
