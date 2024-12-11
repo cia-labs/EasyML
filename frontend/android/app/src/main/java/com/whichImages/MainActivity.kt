@@ -1,4 +1,4 @@
-package com.whichimagez
+package com.whichimages
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
