@@ -1,9 +1,10 @@
 # EasyML
 
-Easy and Efficient collaborative machine learning pipeline. 
+### Easy and Efficient collaborative machine learning pipeline. 
 
 HLD - High Level Design
-![image](https://github.com/cia-labs/Which-Images/assets/41864599/651c3932-d34c-4e25-90b5-16f12d6bbdac)
+
+(![image](https://github.com/user-attachments/assets/77e61426-4a94-4331-a871-20255c92ea37)
 
 # Local Setup Guide
 
