@@ -4,7 +4,7 @@
 
 HLD - High Level Design
 
-(![image](https://github.com/user-attachments/assets/77e61426-4a94-4331-a871-20255c92ea37)
+![image](https://github.com/user-attachments/assets/77e61426-4a94-4331-a871-20255c92ea37)
 
 # Local Setup Guide
 
